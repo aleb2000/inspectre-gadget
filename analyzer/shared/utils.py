@@ -1,6 +1,8 @@
 import claripy
 import itertools
 import traceback
+import pickle
+import base64
 
 def is_sym_expr(x) -> bool:
     return isinstance(x, claripy.ast.base.Base) and x.symbolic
@@ -109,3 +111,6 @@ def ordered_branches(branches):
 def ordered_constraints(constraints):
     constraints = sorted(constraints, key=lambda x: x[0])
     return [(hex(addr), cond, str(ctype)) for addr, cond, ctype in constraints]
+
+def serialize_expr(expr: claripy.BV) -> str:
+    return base64.b64encode(pickle.dumps(expr)).decode()

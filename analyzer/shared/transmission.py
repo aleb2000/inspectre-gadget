@@ -159,6 +159,7 @@ class TransmissionComponent():
     def to_dict(self):
         return OrderedDict([
             ('expr', str(self.expr)),
+            ('expr_serialized', utils.serialize_expr(self.expr)),
             ('size', str(self.size)),
             ('branches', utils.ordered_branches(self.branches)),
             ('constraints', utils.ordered_constraints(self.constraints)),
