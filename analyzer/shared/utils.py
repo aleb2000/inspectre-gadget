@@ -112,5 +112,5 @@ def ordered_constraints(constraints):
     constraints = sorted(constraints, key=lambda x: x[0])
     return [(hex(addr), cond, str(ctype)) for addr, cond, ctype in constraints]
 
-def serialize_expr(expr: claripy.BV) -> str:
+def serialize_expr(expr: claripy.ast.BV) -> str:
     return base64.b64encode(pickle.dumps(expr)).decode()

@@ -44,16 +44,30 @@ class Requirements():
             'direct_regs' : sorted([str(x) for x in self.direct_regs]),
             'mem' : sorted([str(x) for x in self.mem]),
             'const_mem' : sorted([str(x) for x in self.const_mem]),
+
+            'regs_serialized' : sorted([utils.serialize_expr(x) for x in self.regs]),
+            # TODO: how to serialize indirect_regs
+            'direct_regs_serialized' : sorted([utils.serialize_expr(x) for x in self.direct_regs]),
+            'mem_serialized' : sorted([utils.serialize_expr(x) for x in self.mem]),
+            'const_mem_serialized' : sorted([utils.serialize_expr(x) for x in self.const_mem]),
         }
         return str(d)
 
     def to_dict(self):
+        print("Called")
         return OrderedDict([
             ('regs' , sorted([str(x) for x in self.regs])),
             ('indirect_regs' , sorted([f"{str(x)}: {sorted(self.indirect_regs[x])}" for x in self.indirect_regs])),
             ('direct_regs' , sorted([str(x) for x in self.direct_regs])),
             ('mem' , sorted([str(x) for x in self.mem])),
             ('const_mem' , sorted([str(x) for x in self.const_mem])),
+
+            # Serialized stuff
+            ('regs_serialized' , sorted([utils.serialize_expr(x) for x in self.regs])),
+            # TODO: how to serialize indirect_regs
+            ('direct_regs_serialized' , sorted([utils.serialize_expr(x) for x in self.direct_regs])),
+            ('mem_serialized' , sorted([utils.serialize_expr(x) for x in self.mem])),
+            ('const_mem_serialized' , sorted([utils.serialize_expr(x) for x in self.const_mem])),
         ])
 
     def merge(self, other):
@@ -323,6 +337,7 @@ class Transmission():
         d['constraints'] = utils.ordered_constraints(self.constraints)
         d['constraint_requirements'] = self.constraint_requirements
         d['all_requirements'] = self.all_requirements
+        print(d['all_requirements'])
         d['all_requirements_w_branches'] = self.all_requirements_w_branches
 
         d['inferable_bits'] = self.inferable_bits.to_dict()
