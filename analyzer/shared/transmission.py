@@ -54,7 +54,6 @@ class Requirements():
         return str(d)
 
     def to_dict(self):
-        print("Called")
         return OrderedDict([
             ('regs' , sorted([str(x) for x in self.regs])),
             ('indirect_regs' , sorted([f"{str(x)}: {sorted(self.indirect_regs[x])}" for x in self.indirect_regs])),
@@ -212,7 +211,7 @@ class Transmission():
     independent_base: TransmissionComponent
 
     # Properties found at scanning time.
-    aliases: list[claripy.BV]
+    aliases: list[claripy.BV] # NOTE: This is marked as BV but it is actually a MemoryAlias
     branches: list[tuple[int, claripy.BV]]
     branch_requirements: Requirements
 
@@ -333,15 +332,17 @@ class Transmission():
         d['secret_val'] = self.secret_val.to_dict()
 
         d['branches'] = utils.ordered_branches(self.branches)
+        d['branches_serialized'] = utils.serialized_branches(self.branches)
         d['branch_requirements'] = self.branch_requirements
         d['constraints'] = utils.ordered_constraints(self.constraints)
+        d['constraints_serialized'] = utils.serialized_constraints(self.constraints)
         d['constraint_requirements'] = self.constraint_requirements
         d['all_requirements'] = self.all_requirements
-        print(d['all_requirements'])
         d['all_requirements_w_branches'] = self.all_requirements_w_branches
 
         d['inferable_bits'] = self.inferable_bits.to_dict()
         d['aliases'] = [str(x.to_BV()) for x in self.aliases]
+        d['aliases_serialized'] = utils.serialize_expr([x.to_BV() for x in self.aliases])
 
         for p in self.properties:
             d[p] = str(self.properties[p])

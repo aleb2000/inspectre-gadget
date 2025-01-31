@@ -112,5 +112,13 @@ def ordered_constraints(constraints):
     constraints = sorted(constraints, key=lambda x: x[0])
     return [(hex(addr), cond, str(ctype)) for addr, cond, ctype in constraints]
 
-def serialize_expr(expr: claripy.ast.BV) -> str:
+def serialize_expr(expr) -> str:
     return base64.b64encode(pickle.dumps(expr)).decode()
+
+def serialized_branches(branches):
+    branches = sorted(branches, key=lambda x: x[0])
+    return serialize_expr(branches)
+
+def serialized_constraints(constraints):
+    constraints = sorted(constraints, key=lambda x: x[0])
+    return serialize_expr(constraints)
